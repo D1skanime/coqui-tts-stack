@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  coqui-tts:
+    build: .
+    container_name: coqui-tts
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./models:/home/tts/.local/share/tts
+    restart: unless-stopped
