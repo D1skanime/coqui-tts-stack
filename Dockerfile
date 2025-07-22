@@ -8,4 +8,4 @@ RUN apt-get update && \
 #USER tts
 WORKDIR /home/tts
 
-CMD ["tts-server", "--model_name", "tts_models/de/thorsten/tacotron2-DDC", "--vocoder_name", "vocoder_models/de/thorsten/ullband-melgan", "--port", "5002"]
+CMD ["tts-server", "--model_name", "tts_models/de/thorsten/tacotron2-DDC", "--vocoder_name", "vocoder_models/de/thorsten/fullband-melgan", "--port", "5002"]
