@@ -1,16 +1,23 @@
 version: "3.9"
 
 services:
-  tortoise-tts:
+  unmute-tts:
+    container_name: unmute-tts
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: tortoise-tts
     ports:
-      - "5003:5003"
+      - "5004:5004"
     volumes:
-      - /volume1/docker/ki/coqui/models:/root/.cache
+      - /volume1/docker/ki/unmute/models:/workspace/models
+    environment:
+      - MODEL=unmute-1.6b
+      - PORT=5004
+    command: >
+      python3 app.py
+      --model-path /workspace/models/unmute-1.6b
+      --host 0.0.0.0
+      --port 5004
+      --dtype float32
     restart: unless-stopped
-    working_dir: /app
-    command: ["python", "tts_server.py"]
 
