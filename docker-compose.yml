@@ -1,9 +1,10 @@
 version: "3.9"
+
 services:
   tortoise-tts:
     build:
-     context: .
-     dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: tortoise-tts
     ports:
       - "5003:5003"
@@ -12,3 +13,4 @@ services:
     restart: unless-stopped
     working_dir: /app
     command: ["python", "tts_server.py"]
+
