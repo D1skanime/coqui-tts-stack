@@ -1,10 +1,14 @@
 version: "3.9"
 services:
   tortoise-tts:
-    build: .
+    build:
+     context: .
+     dockerfile: Dockerfile
     container_name: tortoise-tts
     ports:
       - "5003:5003"
     volumes:
       - /volume1/docker/ki/coqui/models:/root/.cache
     restart: unless-stopped
+    working_dir: /app
+    command: ["python", "tts_server.py"]
