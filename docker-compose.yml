@@ -7,5 +7,5 @@ services:
     ports:
       - "5002:5002"
     volumes:
-      - ./models:/home/tts/.local/share/tts
+      - /volume1/docker/ki/coqui/models:/home/tts/.local/share/tts
     restart: unless-stopped
