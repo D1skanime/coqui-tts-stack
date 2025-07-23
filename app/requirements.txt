@@ -4,4 +4,4 @@ torchaudio
 librosa
 ffmpeg-python
 soundfile
-git+https://github.com/haoheliu/voicecraft.git
+git+https://github.com/jasonppy/VoiceCraft.git
