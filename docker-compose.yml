@@ -3,12 +3,12 @@ version: "3.9"
 services:
   voicecraft:
     build:
-      context: .
+      context: /volume1/docker/ki/tts
       dockerfile: Dockerfile
     container_name: voicecraft
     volumes:
-      - /volume1/docker/ki/voicecraft/models:/app/models
-      - /volume1/docker/ki/voicecraft/output:/app/output
+      - /volume1/docker/ki/tts/models:/app/models
+      - /volume1/docker/ki/tts/output:/app/output
     working_dir: /app
-    command: ["python", "run_voicecraft.py"]
+    command: ["python", "inference.py"]
     restart: unless-stopped
