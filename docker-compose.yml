@@ -3,7 +3,7 @@ version: "3.9"
 services:
   voicecraft:
     build:
-      context: /volume1/docker/ki/tts
+      context: .  # wichtig! Nutzt das aktuelle Git-Verzeichnis als Build-Kontext
       dockerfile: Dockerfile
     container_name: voicecraft
     volumes:
@@ -11,4 +11,6 @@ services:
       - /volume1/docker/ki/tts/output:/app/output
     working_dir: /app
     command: ["python", "inference.py"]
+    environment:
+      - DEVICE=cpu
     restart: unless-stopped
