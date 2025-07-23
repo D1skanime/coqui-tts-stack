@@ -1,21 +1,14 @@
 FROM python:3.10-slim
 
-WORKDIR /workspace
+WORKDIR /app
 
-# Install system dependencies
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    git \
-    build-essential \
-    libsndfile1 \
-    libgl1 \
-    && rm -rf /var/lib/apt/lists/*
+    apt-get install -y git ffmpeg && \
+    pip install --upgrade pip
 
-# Install PyTorch CPU Version
-RUN pip install --no-cache-dir torch==2.1.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+# Install VoiceCraft dependencies
+COPY app/requirements.txt .
+RUN pip install -r requirements.txt
 
-# Install unmute TTS
-RUN pip install --no-cache-dir git+https://github.com/kyutai-labs/unmute.git
-
-# Standard command
-CMD ["python3", "app.py", "--model-path", "/workspace/models", "--host", "0.0.0.0", "--port", "5004", "--dtype", "float32"]
+# VoiceCraft Code + CLI
+COPY app/ ./

@@ -1,20 +1,14 @@
 version: "3.9"
 
 services:
-  unmute-tts:
-    image: ghcr.io/kyutai-labs/unmute-tts:latest   # <-- fertiges TTS-Image
-    container_name: unmute-tts
-    ports:
-      - "5004:5004"
+  voicecraft:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: voicecraft
     volumes:
-      - /volume1/docker/ki/unmute/models:/app/models
-    environment:
-      MODEL_PATH=/app/models
-      PORT=5004
-    command: >
-      python -m unmute_tts.server
-      --model-path /app/models
-      --host 0.0.0.0
-      --port 5004
-      --dtype float32
+      - /volume1/docker/ki/voicecraft/models:/app/models
+      - /volume1/docker/ki/voicecraft/output:/app/output
+    working_dir: /app
+    command: ["python", "run_voicecraft.py"]
     restart: unless-stopped
