@@ -1,0 +1,72 @@
+name: Build and Push
+
+on:
+  repository_dispatch: # Repo dispatch from voicecraft repo..., automated
+    types: [voicecraft-new-release]
+  workflow_dispatch: # click the button on Github repo!
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+
+      - name: Setting global variables
+        uses: actions/github-script@v6
+        id: RepoOwnerToLowerCase
+        with:
+          script: |
+            core.setOutput('repoOwner', '${{ github.repository_owner }}'.toLowerCase().replaceAll(/[/.]/g, '-').trim('-'));
+
+      - name: Get latest VoiceCraft version
+        id: voicecraft
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: AvionBlock/VoiceCraft
+          excludes: prerelease, draft
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      #- name: Get latest VoiceCraft_Docker Image Version
+      #  id: latest
+      #  uses: shrink/actions-docker-latest-image@v1
+      #  with:
+      #    repository: docker.pkg.github.com/${{ github.repository }}/voicecraft
+
+      #- name: Exit if this latest version is the latest VoiceCraft version
+      #  if: ${{ steps.latest.outputs.tag == steps.voicecraft.outputs.release }}
+      #  run: exit 1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/voicecraft:latest
+            ${{ vars.DOCKERHUB_USERNAME }}/voicecraft:${{ steps.voicecraft.outputs.release }}
+            ghcr.io/${{ steps.RepoOwnerToLowerCase.outputs.repoOwner }}/voicecraft:latest
+            ghcr.io/${{ steps.RepoOwnerToLowerCase.outputs.repoOwner }}/voicecraft:${{ steps.voicecraft.outputs.release }}

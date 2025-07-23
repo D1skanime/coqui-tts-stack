@@ -3,7 +3,7 @@ version: "3.9"
 services:
   voicecraft:
     build:
-      context: .  # wichtig! Nutzt das aktuelle Git-Verzeichnis als Build-Kontext
+      context: .  # Alles kommt aus dem Git-Repo
       dockerfile: Dockerfile
     container_name: voicecraft
     volumes:
