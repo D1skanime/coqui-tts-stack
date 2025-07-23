@@ -5,9 +5,9 @@ from voicecraft.inference import load_model, infer_tts
 
 # Konfiguration
 device = "cpu"  # oder "cuda" wenn du später eine GPU einbaust
-model_path = "models/model.safetensors"
-config_path = "models/config.json"
-output_path = "output/output.wav"
+model_path = "/app/models/model.safetensors"
+config_path = "/app/models/config.json"
+output_path = "/app/output/output.wav"
 text_input = "Hallo zusammen! Willkommen bei deinem eigenen VoiceCraft-Server."
 
 # Modell laden
