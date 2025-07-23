@@ -2,13 +2,14 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+# Benötigte Systembibliotheken
 RUN apt-get update && \
-    apt-get install -y git ffmpeg && \
+    apt-get install -y git ffmpeg build-essential libsndfile1 curl && \
     pip install --upgrade pip
 
-# Install VoiceCraft dependencies
+# Python-Abhängigkeiten
 COPY app/requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# VoiceCraft Code + CLI
+# VoiceCraft Skripte
 COPY app/ ./
